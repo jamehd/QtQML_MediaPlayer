@@ -7,7 +7,7 @@
 class Translation : public QObject
 {
     Q_OBJECT
-
+    Q_PROPERTY(QString currentLanguage READ currentLanguage WRITE setCurrentLanguage NOTIFY currentLanguageChanged)
 public:
     Translation( QGuiApplication *app, QObject *parent = nullptr);
     QString getEmptyString();

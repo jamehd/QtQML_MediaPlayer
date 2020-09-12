@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include "playlistmodel.h"
 #include "translation.h"
+#include "GestureListener.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,8 +16,9 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     Translation translator(&app);
-    translator.setCurrentLanguage("us");
     Player player;
+    GestureListener listener;
+    engine.rootContext()->setContextProperty("gestureListener",&listener);
     engine.rootContext()->setContextProperty("myModel",player.m_playlistModel);
     engine.rootContext()->setContextProperty("player",player.m_player);
     engine.rootContext()->setContextProperty("utility",&player);

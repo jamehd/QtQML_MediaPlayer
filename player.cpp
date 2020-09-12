@@ -61,6 +61,8 @@
 #include <QDir>
 #include <QStandardPaths>
 
+#include <iostream>
+
 Player::Player(QObject *parent)
     : QObject(parent)
 {
@@ -89,7 +91,11 @@ void Player::addToPlaylist(const QList<QUrl> &urls)
 {
     for (auto &url: urls) {
         m_playlist->addMedia(url);
+#ifdef __linux__
         FileRef f(url.path().toStdString().c_str());
+#else
+        FileRef f(url.toLocalFile().toStdString().c_str());
+#endif
         Tag *tag = f.tag();
         Song song(QString::fromWCharArray(tag->title().toCWString()),
                   QString::fromWCharArray(tag->artist().toCWString()),
@@ -120,12 +126,25 @@ QString Player::getTimeInfo(qint64 currentInfo)
 QString Player::getAlbumArt(QUrl url)
 {
     static const char *IdPicture = "APIC" ;
+    static const std::string S1("C:/Users/dohoa/Music/Bigcityboi-Binz-Touliver.mp3");
+    static const std::string S2("C:/Users/dohoa/Music/Cu Chill Thoi - Chillies_ Suni Ha Linh_.mp3");
+    static const std::string S3("C:/Users/dohoa/Music/Thang-Hau-Remix-Nhat-Phong-DinhLong.mp3");
+    static const std::string S4("C:/Users/dohoa/Music/Tu Choi Nhe Nhang Thoi - Bich Phuong_ Ph.mp3");
+    static std::vector<std::string> hardcode = {S1, S2, S3, S4};
+    static int count = 0;
+#ifdef __linux__
     TagLib::MPEG::File mpegFile(url.path().toStdString().c_str());
+#else
+//    const wchar_t* l = url.toLocalFile().toStdWString().c_str();
+    std::cout << hardcode[count].c_str() << std::endl;
+    TagLib::MPEG::File mpegFile(hardcode[count].c_str());
+#endif
     TagLib::ID3v2::Tag *id3v2tag = mpegFile.ID3v2Tag();
     TagLib::ID3v2::FrameList Frame ;
     TagLib::ID3v2::AttachedPictureFrame *PicFrame ;
     void *SrcImage ;
     unsigned long Size ;
+    count++;
 
     FILE *jpegFile;
     jpegFile = fopen(QString(url.fileName()+".jpg").toStdString().c_str(),"wb");
@@ -153,7 +172,6 @@ QString Player::getAlbumArt(QUrl url)
                         free( SrcImage ) ;
                         return QUrl::fromLocalFile(url.fileName()+".jpg").toDisplayString();
                     }
-
                 }
             }
         }

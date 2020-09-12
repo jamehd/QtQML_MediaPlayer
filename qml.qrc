@@ -41,5 +41,7 @@
         <file>PlaylistView.qml</file>
         <file>MediaInfoControl.qml</file>
         <file>AppHeader.qml</file>
+        <file>translator/string_us.ts</file>
+        <file>translator/string_vn.ts</file>
     </qresource>
 </RCC>

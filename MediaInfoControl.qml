@@ -191,6 +191,10 @@ Item {
         onClicked: {
             player.playlist.previous()
         }
+        Connections {
+            target: gestureListener
+            onPrev: player.playlist.previous()
+        }
     }
     ButtonControl {
         id: play
@@ -212,6 +216,19 @@ Item {
                 play.source = player.state == MediaPlayer.PlayingState ?  "qrc:/Image/pause.png" : "qrc:/Image/play.png"
             }
         }
+        Connections {
+            target: gestureListener
+            onPlay: {
+                if (player.state != MediaPlayer.PlayingState){
+                    player.play()
+                }
+            }
+            onPause: {
+                if (player.state != MediaPlayer.PausedState){
+                    player.pause()
+                }
+            }
+        }
     }
     ButtonControl {
         id: next
@@ -223,6 +240,10 @@ Item {
         icon_released: "qrc:/Image/next.png"
         onClicked: {
             player.playlist.next()
+        }
+        Connections {
+            target: gestureListener
+            onNext: player.playlist.next()
         }
     }
     SwitchButton {

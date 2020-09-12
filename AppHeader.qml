@@ -23,7 +23,7 @@ Item {
             anchors.leftMargin: 5
             anchors.verticalCenter: parent.verticalCenter
             verticalAlignment: Text.AlignVCenter
-//            text: ...
+            text: qsTr("Play List")
             color: "white"
             font.pixelSize: 32
         }
@@ -49,12 +49,12 @@ Item {
                 border.color: "gray"
                 border.width: 3
                 color: "transparent"
-//                visible: ...
+                visible: translator.currentLanguage === "VN"
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-//                    ...
+                    translator.selectLanguage("VN")
                 }
             }
         }
@@ -73,12 +73,12 @@ Item {
                 border.color: "gray"
                 border.width: 3
                 color: "transparent"
-//                visible: ...
+                visible: translator.currentLanguage === "US"
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-//                    ...
+                    translator.selectLanguage("US")
                 }
             }
         }
